@@ -1,0 +1,36 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+        http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd" version="2.2">
+        
+        <!-- Entidad que esta mapeada a una clase del paquete -->
+        <entity class="co.edu.usbcali.viajes.app.domain.Cliente">
+              
+             <!-- Por estandar, el nombre debe estar conformado por el nombre de la entidad (.) el nombre de la consulta -->
+             <named-native-query name="Cliente.consultaOrm" result-set-mapping="consultaOrm">
+             
+             <!-- La consulta tal cual como la haria en pg, para detectar el parametro en el where se pone (:) y el nombre del parametro
+             que tiene que coincidir con el nombre del parametro con la anotacion @Param en el repository -->
+                <query>
+                select 
+                   cli.numero_identificacion numeroIdentificacion,
+                   cli.nombre nombre,
+                   cli.primer_apellido primerApellido,
+                   cli.fecha_nacimiento fechaNacimiento,
+                   cli.id_tiid tiId
+                   from cliente cli 
+                   inner join tipo_identificacion ti
+                   on cli.id_tiid = ti.id_tiid
+                   where cli.fecha_nacimiento between :pFechaNacimiento AND :pFechaNacimientoC
+                   and cli.numero_identificacion like :pNumeroIdentificacion
+                   and ti.codigo = :pCodigo
+            
+            </query>
+        
+        </named-native-query>
+        
+        
+        </entity>
+        
+</entity-mappings>
